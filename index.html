@@ -91,6 +91,11 @@
         @keyframes slideInRight { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
         .toast-enter { animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
 
+        @keyframes slideInMenu { from { transform: translateX(100%); } to { transform: translateX(0); } }
+        @keyframes slideOutMenu { from { transform: translateX(0); } to { transform: translateX(100%); } }
+        .menu-enter { animation: slideInMenu 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+        .menu-exit { animation: slideOutMenu 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
         /* Canvas Background Styling */
         #bg-canvas {
             position: fixed;
@@ -168,38 +173,64 @@
                 </div>
 
                 <!-- Mobile Menu Hamburger Button -->
-                <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-full glass-panel hover:bg-[var(--card-border)] transition-all text-[var(--text-main)] shadow-sm focus:outline-none">
+                <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-full hover:bg-[var(--card-border)] transition-all text-[var(--text-main)] focus:outline-none relative z-30">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>
                 </button>
             </div>
 
-            <!-- Mobile Menu Dropdown Panel -->
-            <div id="mobile-menu" class="hidden absolute top-full left-0 right-0 mt-4 glass-card rounded-3xl p-6 flex-col gap-4 shadow-2xl z-10 border border-[var(--card-border)] lg:hidden max-h-[80vh] overflow-y-auto animate-fadeIn">
-                <a href="#home" class="mobile-nav-link block px-4 py-3 rounded-xl hover:bg-[var(--card-border)] text-lg font-bold text-[var(--text-main)] transition-colors" data-i18n="nav_home">Home</a>
-                <a href="#how-it-works" class="mobile-nav-link block px-4 py-3 rounded-xl hover:bg-[var(--card-border)] text-lg font-bold text-[var(--text-main)] transition-colors" data-i18n="nav_how_it_works">How it works</a>
-                <a href="#marketplace" class="mobile-nav-link block px-4 py-3 rounded-xl hover:bg-[var(--card-border)] text-lg font-bold text-[var(--text-main)] transition-colors" data-i18n="nav_marketplace">Marketplace</a>
-                <a href="#gemini-qa" class="mobile-nav-link block px-4 py-3 rounded-xl hover:bg-[var(--card-border)] text-lg font-bold text-[var(--text-main)] transition-colors" data-i18n="nav_gemini_qa">Gemini Q&A</a>
-                <a href="#diagnostic" class="mobile-nav-link block px-4 py-3 rounded-xl hover:bg-[var(--card-border)] text-lg font-bold text-amber-600 dark:text-amber-500 transition-colors" data-i18n="nav_diagnostic">Diagnostic</a>
+            <!-- Mobile Menu Backdrop -->
+            <div id="mobile-menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-opacity opacity-0 lg:hidden" aria-hidden="true"></div>
+
+            <!-- Mobile Menu Drawer Panel -->
+            <div id="mobile-menu" class="fixed top-0 right-0 bottom-0 w-[85vw] max-w-sm glass-card border-l border-[var(--card-border)] shadow-2xl z-50 lg:hidden transform translate-x-full flex flex-col justify-between">
                 
-                <div class="h-px bg-[var(--card-border)] w-full my-2"></div>
-                
-                <div class="flex items-center justify-between px-2 gap-4">
-                    <div class="relative w-full">
-                        <select id="mobile-lang-selector" class="w-full glass-panel text-[var(--text-main)] font-semibold text-sm rounded-xl py-3 pl-4 pr-10 appearance-none focus:outline-none focus:ring-1 focus:ring-emerald-500 cursor-pointer">
-                            <option value="en" class="bg-[var(--bg-secondary)] text-[var(--text-main)]">English</option>
-                            <option value="hi" class="bg-[var(--bg-secondary)] text-[var(--text-main)]">हिन्दी</option>
-                            <option value="gu" class="bg-[var(--bg-secondary)] text-[var(--text-main)]">ગુજરાતી</option>
-                        </select>
-                        <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[var(--text-muted)]"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div>
+                <div class="flex-1 overflow-y-auto pt-6 px-6 pb-6 custom-scrollbar">
+                    <!-- Drawer Header -->
+                    <div class="flex items-center justify-between mb-8">
+                        <a href="#home" class="flex items-center gap-3 mobile-nav-brand">
+                            <div class="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-emerald-500"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21.75V12m0 0V3.75M14.25 5.25L12 3.75 9.75 5.25M14.25 8.25L12 6.75 9.75 8.25M14.25 11.25L12 9.75 9.75 11.25M8.25 13.5c-2.06-2.06-3-4.5-3-4.5s2.44-1.06,4.5-3.06M15.75 13.5c2.06-2.06,3-4.5,3-4.5s-2.44-1.06-4.5-3.06" /></svg>
+                            </div>
+                            <span class="font-bold text-xl text-[var(--text-main)] tracking-tight">Hariyali<span class="text-emerald-500">.</span></span>
+                        </a>
+                        <button id="mobile-menu-close" class="p-2 rounded-full bg-[var(--panel-bg)] border border-[var(--card-border)] hover:bg-[var(--card-border)] text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors focus:outline-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                        </button>
                     </div>
-                    <button class="theme-toggle-btn p-3 rounded-xl glass-panel text-[var(--text-main)] shadow-sm flex-shrink-0">
-                        <!-- Icons handled by JS -->
-                    </button>
+
+                    <!-- Navigation Links -->
+                    <nav class="flex flex-col gap-1">
+                        <a href="#home" class="mobile-nav-link block px-4 py-3.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-border)] font-medium transition-colors" data-i18n="nav_home">Home</a>
+                        <a href="#how-it-works" class="mobile-nav-link block px-4 py-3.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-border)] font-medium transition-colors" data-i18n="nav_how_it_works">How it works</a>
+                        <a href="#marketplace" class="mobile-nav-link block px-4 py-3.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-border)] font-medium transition-colors" data-i18n="nav_marketplace">Marketplace</a>
+                        <a href="#gemini-qa" class="mobile-nav-link block px-4 py-3.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-border)] font-medium transition-colors" data-i18n="nav_gemini_qa">Gemini Q&A</a>
+                        
+                        <div class="h-px bg-[var(--card-border)] w-full my-3"></div>
+                        
+                        <a href="#diagnostic" class="mobile-nav-link block px-4 py-3.5 rounded-2xl border border-amber-500/30 text-amber-500 font-medium hover:bg-amber-500/10 transition-colors" data-i18n="nav_diagnostic">Diagnostic</a>
+                    </nav>
                 </div>
 
-                <div class="grid grid-cols-2 gap-3 mt-2">
-                    <a href="#login" class="mobile-nav-link text-center px-4 py-3 rounded-xl text-[var(--text-main)] font-bold glass-panel hover:bg-[var(--card-border)] transition-colors" data-i18n="nav_login">Login</a>
-                    <a href="#register" class="mobile-nav-link text-center bg-gradient-to-r from-emerald-500 to-teal-400 text-white px-4 py-3 rounded-xl font-bold shadow-lg" data-i18n="nav_register">Register</a>
+                <!-- Footer Actions -->
+                <div class="p-6 border-t border-[var(--card-border)] bg-[var(--panel-bg)]">
+                    <div class="flex items-center justify-between gap-3 mb-4">
+                        <div class="relative w-full">
+                            <select id="mobile-lang-selector" class="w-full glass-panel border border-[var(--card-border)] text-[var(--text-main)] font-medium text-sm rounded-xl py-3 pl-4 pr-10 appearance-none focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/50 cursor-pointer transition-colors">
+                                <option value="en" class="bg-[var(--bg-secondary)] text-[var(--text-main)]">English</option>
+                                <option value="hi" class="bg-[var(--bg-secondary)] text-[var(--text-main)]">हिन्दी</option>
+                                <option value="gu" class="bg-[var(--bg-secondary)] text-[var(--text-main)]">ગુજરાતી</option>
+                            </select>
+                            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[var(--text-muted)]"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div>
+                        </div>
+                        <button class="theme-toggle-btn p-3 rounded-xl glass-panel border border-[var(--card-border)] hover:bg-[var(--card-border)] text-[var(--text-main)] transition-colors shadow-sm flex-shrink-0">
+                            <!-- Icons handled by JS -->
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <a href="#login" class="mobile-nav-link text-center px-4 py-3 rounded-xl text-[var(--text-main)] font-medium border border-[var(--card-border)] bg-[var(--panel-bg)] hover:bg-[var(--card-border)] transition-colors" data-i18n="nav_login">Login</a>
+                        <a href="#register" class="mobile-nav-link text-center bg-gradient-to-r from-emerald-500 to-teal-400 text-white hover:opacity-90 px-4 py-3 rounded-xl font-bold transition-all shadow-lg shadow-emerald-500/20" data-i18n="nav_register">Register</a>
+                    </div>
                 </div>
             </div>
 
@@ -550,7 +581,7 @@
         document.getElementById('year').textContent = new Date().getFullYear();
         
         // ADD YOUR GEMINI API KEY HERE to enable real AI processing
-        const API_KEYS = { GEMINI: 'AQ.Ab8RN6I3kEedamX1ZXTgUdkB3ckd617Tk-6mKDootqZdgKQ13Q' };
+        const API_KEYS = { GEMINI: '' };
 
         // --- Data Definitions (Moved to top to prevent Reference Errors) ---
         const CROP_NAMES = {"Apple":"Apple","Arecanut":"Arecanut","Bajra (Pearl Millet)":"Bajra (Pearl Millet)","Banana":"Banana","Barley (Jau)":"Barley (Jau)","Black Gram":"Black Gram","Black Pepper":"Black Pepper","Brinjal":"Brinjal","Cabbage":"Cabbage","Cardamom":"Cardamom","Carrot":"Carrot","Cashew":"Cashew","Castor":"Castor","Cauliflower":"Cauliflower","Chilli":"Chilli","Coconut":"Coconut","Coffee":"Coffee","Cotton":"Cotton","Garlic":"Garlic","Ginger":"Ginger","Gram (Chickpea)":"Gram (Chickpea)","Grapes":"Grapes","Green Gram":"Green Gram","Groundnut":"Groundnut","Jowar (Sorghum)":"Jowar (Sorghum)","Jute":"Jute","Lentil (Masur)":"Lentil (Masur)","Linseed":"Linseed","Maize":"Maize","Mango":"Mango","Millet":"Millet","Mustard":"Mustard","Okra":"Okra","Onion":"Onion","Orange":"Orange","Papaya":"Papaya","Pea":"Pea","Pigeon Pea (Arhar)":"Pigeon Pea (Arhar)","Pineapple":"Pineapple","Pomegranate":"Pomegranate","Potato":"Potato","Ragi (Finger Millet)":"Ragi (Finger Millet)","Rice":"Rice","Rubber":"Rubber","Safflower":"Safflower","Sesame":"Sesame","Soybean":"Soybean","Spinach":"Spinach","Sugarcane":"Sugarcane","Sunflower":"Sunflower","Sweet Potato":"Sweet Potato","Tea":"Tea","Tobacco":"Tobacco","Tomato":"Tomato","Turmeric":"Turmeric","Vanilla":"Vanilla","Wheat":"Wheat"};
@@ -835,33 +866,18 @@
         const fetchMarketPrices = async (crop, district) => {
             return new Promise(resolve => {
                 setTimeout(() => {
-                    // Realistic Base Prices (₹/Quintal) to prevent absurd valuations
-                    const REALISTIC_BASE_PRICES = {
-                        "Sugarcane": 315, "Banana": 1400, "Potato": 1250, "Onion": 1600, "Tomato": 1500,
-                        "Apple": 6500, "Mango": 4500, "Grapes": 4000, "Pineapple": 2800,
-                        "Wheat": 2275, "Rice": 2183, "Maize": 2090, "Bajra (Pearl Millet)": 2500,
-                        "Cotton": 7520, "Jute": 5050,
-                        "Coffee": 16000, "Tea": 13000, "Rubber": 14500,
-                        "Cardamom": 160000, "Vanilla": 250000, "Black Pepper": 48000, "Cashew": 72000,
-                        "Groundnut": 6377, "Soybean": 4600, "Mustard": 5450, "Gram (Chickpea)": 5440
-                    };
-                    
-                    let basePrice = REALISTIC_BASE_PRICES[crop] || 3500;
-                    // Add slight deterministic variance based on district
-                    let currentPrice = basePrice + ((crop.charCodeAt(0) + district.charCodeAt(0)) * 10) % (basePrice * 0.15);
-                    
                     const prices = [];
-                    const volatility = 0.02; const drift = 0.0005;
+                    let currentPrice = 3000 + (crop.length * 150) % 2500;
+                    const volatility = 0.03; const drift = 0.001;
                     let seed = crop.charCodeAt(0) + district.charCodeAt(0);
                     const pseudoRandom = () => { let x = Math.sin(seed++) * 10000; return x - Math.floor(x); };
-                    
                     for (let i = 30; i >= 0; i--) {
                         const date = new Date(Date.now() - i * 86400000);
                         const shock = (pseudoRandom() + pseudoRandom() + pseudoRandom() + pseudoRandom() - 2) / 2;
                         currentPrice = currentPrice * Math.exp(drift + volatility * shock);
-                        prices.push({ date: date.toISOString().split('T')[0], min_price: currentPrice * 0.96, max_price: currentPrice * 1.04, modal_price: currentPrice });
+                        prices.push({ date: date.toISOString().split('T')[0], min_price: currentPrice * 0.97, max_price: currentPrice * 1.03, modal_price: currentPrice });
                     }
-                    resolve({ prices, forecastedHarvestPrice: currentPrice * (1 + (pseudoRandom() * 0.1 - 0.02)) });
+                    resolve({ prices, forecastedHarvestPrice: currentPrice * 1.05 });
                 }, 800);
             });
         };
@@ -1223,14 +1239,30 @@
                 const isMobile = link.classList.contains('mobile-nav-link');
                 
                 if (link.getAttribute('href') === hash || (hash === '#predict' && link.getAttribute('href') === '#home')) {
-                    if (isMobile && !link.classList.contains('bg-gradient-to-r')) {
-                        link.className = 'mobile-nav-link block px-4 py-3 rounded-xl bg-emerald-500/10 text-emerald-500 text-lg font-bold transition-colors';
+                    if (isMobile) {
+                        if (link.getAttribute('href') === '#diagnostic') {
+                            link.className = 'mobile-nav-link block px-4 py-3.5 rounded-2xl border border-amber-500/30 text-amber-500 font-medium bg-amber-500/10 transition-colors';
+                        } else if (link.getAttribute('href') === '#login') {
+                           link.className = 'mobile-nav-link text-center px-4 py-3 rounded-xl text-[var(--text-main)] font-medium border border-[var(--card-border)] bg-[var(--card-border)] transition-colors';
+                        } else if (link.getAttribute('href') === '#register') {
+                           link.className = 'mobile-nav-link text-center bg-gradient-to-r from-emerald-500 to-teal-400 text-white hover:opacity-90 px-4 py-3 rounded-xl font-bold transition-all shadow-lg shadow-emerald-500/20';
+                        } else {
+                            link.className = 'mobile-nav-link block px-4 py-3.5 rounded-xl bg-[var(--card-border)] text-[var(--text-main)] font-medium transition-colors';
+                        }
                     } else if (!isMobile) {
                         link.className = 'nav-link px-4 py-2 rounded-full text-sm transition-all duration-300 glass-panel text-[var(--text-main)] font-bold';
                     }
                 } else {
-                    if (isMobile && !link.classList.contains('bg-gradient-to-r') && link.getAttribute('href') !== '#login') {
-                        link.className = 'mobile-nav-link block px-4 py-3 rounded-xl hover:bg-[var(--card-border)] text-lg font-bold text-[var(--text-main)] transition-colors';
+                    if (isMobile) {
+                         if (link.getAttribute('href') === '#diagnostic') {
+                            link.className = 'mobile-nav-link block px-4 py-3.5 rounded-2xl border border-amber-500/30 text-amber-500 font-medium hover:bg-amber-500/10 transition-colors';
+                        } else if (link.getAttribute('href') === '#login') {
+                            link.className = 'mobile-nav-link text-center px-4 py-3 rounded-xl text-[var(--text-main)] font-medium border border-[var(--card-border)] bg-[var(--panel-bg)] hover:bg-[var(--card-border)] transition-colors';
+                        } else if (link.getAttribute('href') === '#register') {
+                            link.className = 'mobile-nav-link text-center bg-gradient-to-r from-emerald-500 to-teal-400 text-white hover:opacity-90 px-4 py-3 rounded-xl font-bold transition-all shadow-lg shadow-emerald-500/20';
+                        } else {
+                            link.className = 'mobile-nav-link block px-4 py-3.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-border)] font-medium transition-colors';
+                        }
                     } else if (!isMobile && !link.classList.contains('bg-gradient-to-r') && !link.classList.contains('bg-amber-500/10')) {
                         link.className = 'nav-link px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-border)]';
                     }
@@ -1504,37 +1536,17 @@
 
             const areaInHectares = parseFloat(area) * 0.404686;
             
-            // Advanced Algorithm: "AI Thinking" Yield Modifier
+            // Refined Algorithm: Calculate Yield Modifier based on Soil & Temp stress
             let yieldModifier = 1.0;
             const temp = weather.current.temp;
-            const humidity = weather.current.humidity;
-
-            // 1. Climate Stress Analysis
-            if(temp > 38) yieldModifier -= 0.25; // Severe heat penalty
-            else if(temp > 33) yieldModifier -= 0.10; // Moderate heat
-            if(temp < 10) yieldModifier -= 0.20; // Severe cold penalty
-            else if(temp < 15) yieldModifier -= 0.08; // Moderate cold
-            
-            // 2. Humidity / Disease Vector Analysis
-            if(humidity > 85) yieldModifier -= 0.12; // Fungal risk penalty
-            else if(humidity < 30) yieldModifier -= 0.08; // Drought stress penalty
-            
-            // 3. Precision pH Matching
+            if(temp > 35) yieldModifier -= 0.1; // Heat stress
+            if(temp < 15) yieldModifier -= 0.1; // Cold stress
             const avgPh = (cropInfo.ph[0] + cropInfo.ph[1]) / 2;
-            const phDiff = Math.abs(soilPh - avgPh);
-            if(phDiff > 1.5) yieldModifier -= 0.35; // Toxic mismatch penalty
-            else if(phDiff > 0.8) yieldModifier -= 0.15; // Moderate mismatch penalty
-            else if(phDiff <= 0.3) yieldModifier += 0.08; // Perfect condition bonus
+            if(Math.abs(soilPh - avgPh) > 1.0) yieldModifier -= 0.15; // pH stress
+            else yieldModifier += 0.05; // Ideal pH
 
-            // 4. Soil Texture Compatibility Logic
-            if (soilType === 'Sandy' && cropInfo.waterReq_mm > 1000) yieldModifier -= 0.20; // High water demand crop in sandy soil
-            if (soilType === 'Clayey' && (crop === 'Potato' || crop === 'Carrot' || crop === 'Onion')) yieldModifier -= 0.25; // Root crops struggle in heavy clay
-
-            // Add pseudo-random organic variance (-5% to +5%)
+            // Randomize slightly for uniqueness based on inputs so it's consistent
             yieldModifier += (((district.length * 3) % 15) - ((crop.length * 2) % 10)) / 100; 
-
-            // Hard constraints: Yield can't drop below 30% or exceed 130% of baseline
-            yieldModifier = Math.max(0.3, Math.min(1.3, yieldModifier));
 
             const expectedYield = areaInHectares * cropInfo.baselineYield * yieldModifier;
             const totalCost = areaInHectares * cropInfo.cost_per_hectare;
@@ -1955,18 +1967,50 @@
         // Mobile Nav Toggle Handlers
         const mobileBtn = document.getElementById('mobile-menu-btn');
         const mobileMenu = document.getElementById('mobile-menu');
+        const mobileBackdrop = document.getElementById('mobile-menu-backdrop');
+        const mobileCloseBtn = document.getElementById('mobile-menu-close');
         
-        mobileBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-            mobileMenu.classList.toggle('flex');
-        });
+        function openMobileMenu() {
+            mobileMenu.classList.remove('hidden');
+            mobileBackdrop.classList.remove('hidden');
+            // Force reflow
+            void mobileMenu.offsetWidth;
+            
+            mobileMenu.classList.remove('translate-x-full');
+            mobileMenu.classList.add('menu-enter');
+            
+            mobileBackdrop.classList.remove('opacity-0');
+            mobileBackdrop.classList.add('opacity-100');
+            
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        }
+
+        function closeMobileMenu() {
+            mobileMenu.classList.remove('menu-enter');
+            mobileMenu.classList.add('menu-exit');
+            
+            mobileBackdrop.classList.remove('opacity-100');
+            mobileBackdrop.classList.add('opacity-0');
+            
+            document.body.style.overflow = '';
+            
+            setTimeout(() => {
+                if (mobileMenu.classList.contains('menu-exit')) {
+                    mobileMenu.classList.add('hidden');
+                    mobileMenu.classList.add('translate-x-full');
+                    mobileMenu.classList.remove('menu-exit');
+                    mobileBackdrop.classList.add('hidden');
+                }
+            }, 300);
+        }
+
+        mobileBtn.addEventListener('click', openMobileMenu);
+        mobileCloseBtn.addEventListener('click', closeMobileMenu);
+        mobileBackdrop.addEventListener('click', closeMobileMenu);
 
         // Close mobile menu on clicking any link inside it
-        document.querySelectorAll('.mobile-nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-                mobileMenu.classList.remove('flex');
-            });
+        document.querySelectorAll('.mobile-nav-link, .mobile-nav-brand').forEach(link => {
+            link.addEventListener('click', closeMobileMenu);
         });
 
         // Marketplace Tabs
