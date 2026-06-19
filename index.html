@@ -121,6 +121,34 @@
 </head>
 <body class="dark-theme selection:bg-emerald-500/30 selection:text-[var(--text-main)] overflow-x-hidden relative flex flex-col min-h-screen">
 
+    <!-- Initial "Tech Expo" Style Loader -->
+    <div id="site-loader" class="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#050505] transition-transform duration-[1.2s] ease-[cubic-bezier(0.7,0,0.3,1)]">
+        <div class="relative overflow-hidden mb-2 flex flex-col items-center gap-2">
+            <div class="overflow-hidden">
+                <h1 id="loader-title" class="text-8xl md:text-[10rem] font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-200 tracking-tighter uppercase transform translate-y-full transition-transform duration-[1.5s] ease-[cubic-bezier(0.16,1,0.3,1)] delay-100" style="font-family: 'Anton', var(--font-sans); -webkit-text-stroke: 1px rgba(16,185,129,0.5);">
+                    HARIYALI <span class="text-white" style="-webkit-text-stroke: 0;">2.0</span>
+                </h1>
+            </div>
+            <div class="overflow-hidden h-12">
+                <p id="loader-tagline" class="text-emerald-500/80 font-mono tracking-[0.3em] uppercase text-xl md:text-2xl transform -translate-y-full opacity-0 transition-all duration-1000 ease-out delay-500">
+                    Predict-Plant-Prosper
+                </p>
+            </div>
+        </div>
+        
+        <div class="flex flex-col items-center gap-3 mt-8 w-full max-w-md px-8">
+            <div class="w-full h-[2px] bg-white/5 overflow-hidden relative">
+                <div id="loader-bar" class="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-500 w-0 transition-all duration-200 ease-out relative">
+                    <div class="absolute top-0 right-0 bottom-0 w-20 bg-gradient-to-r from-transparent to-white/50 blur-[2px]"></div>
+                </div>
+            </div>
+            <div class="flex justify-between w-full text-xs font-mono font-bold tracking-widest text-[#52525b]">
+                <span class="animate-pulse">LOADING SYSTEM</span>
+                <span id="loader-percent" class="text-emerald-500 transition-opacity duration-300 w-12 text-right">000%</span>
+            </div>
+        </div>
+    </div>
+
     <!-- Dynamic Canvas Background -->
     <canvas id="bg-canvas"></canvas>
 
@@ -581,6 +609,57 @@
 
     <!-- LOGIC SCRIPT -->
     <script>
+        document.body.style.overflow = 'hidden'; // Lock scroll during loading
+        window.addEventListener('DOMContentLoaded', () => {
+            const loader = document.getElementById('site-loader');
+            const title = document.getElementById('loader-title');
+            const tagline = document.getElementById('loader-tagline');
+            const bar = document.getElementById('loader-bar');
+            const percent = document.getElementById('loader-percent');
+
+            if (loader) {
+                setTimeout(() => {
+                    title.classList.remove('translate-y-full');
+                    tagline.classList.remove('-translate-y-full', 'opacity-0');
+                }, 100);
+
+                // Progress simulation
+                let p = 0;
+                const interval = setInterval(() => {
+                    // Slower initial loading, faster towards the end
+                    const increment = p < 50 ? Math.floor(Math.random() * 5) + 1 : Math.floor(Math.random() * 15) + 5;
+                    p += increment;
+                    
+                    if (p > 100) p = 100;
+                    
+                    bar.style.width = p + '%';
+                    // Format percentage to always be 3 digits
+                    percent.innerText = p.toString().padStart(3, '0') + '%';
+
+                    if (p === 100) {
+                        clearInterval(interval);
+                        
+                        // Add a flash effect to the text when complete
+                        title.classList.add('scale-105', 'drop-shadow-[0_0_30px_rgba(16,185,129,0.8)]');
+                        
+                        setTimeout(() => {
+                            // Slide up and away smoothly
+                            loader.style.transform = 'translateY(-100vh)';
+                            // Slight scale down of the main app while loader exits
+                            document.getElementById('app-main').style.transform = 'scale(0.98)';
+                            document.getElementById('app-main').style.transition = 'transform 1s cubic-bezier(0.16, 1, 0.3, 1)';
+                            
+                            setTimeout(() => {
+                                document.getElementById('app-main').style.transform = 'scale(1)';
+                                document.body.style.overflow = ''; // Unlock scroll
+                                loader.remove(); // Cleanup DOM
+                            }, 800);
+                        }, 800); // Hold at 100% for a moment
+                    }
+                }, 80); // Faster tick rate for smoother numbers
+            }
+        });
+
         document.getElementById('year').textContent = new Date().getFullYear();
         
         // ADD YOUR GEMINI API KEY HERE to enable real AI processing
