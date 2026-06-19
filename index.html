@@ -182,54 +182,57 @@
             <div id="mobile-menu-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden transition-opacity opacity-0 lg:hidden" aria-hidden="true"></div>
 
             <!-- Mobile Menu Drawer Panel -->
-            <div id="mobile-menu" class="fixed top-0 right-0 bottom-0 w-[85vw] max-w-sm glass-card border-l border-[var(--card-border)] shadow-2xl z-50 lg:hidden transform translate-x-full flex flex-col justify-between">
+            <div id="mobile-menu" class="fixed top-0 right-0 bottom-0 w-[85vw] max-w-sm bg-[var(--bg-main)] border-l border-[var(--card-border)] shadow-2xl z-50 lg:hidden transform translate-x-full flex flex-col justify-between overflow-hidden">
                 
-                <div class="flex-1 overflow-y-auto pt-6 px-6 pb-6 custom-scrollbar">
+                <!-- Bottom Gradient Glow (matches image exactly) -->
+                <div class="absolute bottom-0 left-0 right-0 h-[50%] bg-gradient-to-t from-emerald-500/20 to-transparent pointer-events-none z-0"></div>
+
+                <div class="flex-1 overflow-y-auto pt-6 px-6 pb-6 custom-scrollbar relative z-10">
                     <!-- Drawer Header -->
                     <div class="flex items-center justify-between mb-8">
                         <a href="#home" class="flex items-center gap-3 mobile-nav-brand">
-                            <div class="w-8 h-8 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-emerald-500"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21.75V12m0 0V3.75M14.25 5.25L12 3.75 9.75 5.25M14.25 8.25L12 6.75 9.75 8.25M14.25 11.25L12 9.75 9.75 11.25M8.25 13.5c-2.06-2.06-3-4.5-3-4.5s2.44-1.06,4.5-3.06M15.75 13.5c2.06-2.06,3-4.5,3-4.5s-2.44-1.06-4.5-3.06" /></svg>
+                            <div class="w-8 h-8 rounded-full border border-emerald-500/30 flex items-center justify-center bg-[var(--bg-secondary)]">
+                                <span class="text-emerald-500 text-sm font-bold">|</span>
                             </div>
                             <span class="font-bold text-xl text-[var(--text-main)] tracking-tight">Hariyali<span class="text-emerald-500">.</span></span>
                         </a>
-                        <button id="mobile-menu-close" class="p-2 rounded-full bg-[var(--panel-bg)] border border-[var(--card-border)] hover:bg-[var(--card-border)] text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors focus:outline-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
+                        <button id="mobile-menu-close" class="w-8 h-8 rounded-full border border-[var(--card-border)] bg-transparent hover:bg-[var(--card-border)] text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors flex items-center justify-center focus:outline-none">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>
                         </button>
                     </div>
 
                     <!-- Navigation Links -->
-                    <nav class="flex flex-col gap-1">
-                        <a href="#home" class="mobile-nav-link block px-4 py-3.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-border)] font-medium transition-colors" data-i18n="nav_home">Home</a>
-                        <a href="#how-it-works" class="mobile-nav-link block px-4 py-3.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-border)] font-medium transition-colors" data-i18n="nav_how_it_works">How it works</a>
-                        <a href="#marketplace" class="mobile-nav-link block px-4 py-3.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-border)] font-medium transition-colors" data-i18n="nav_marketplace">Marketplace</a>
-                        <a href="#gemini-qa" class="mobile-nav-link block px-4 py-3.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-border)] font-medium transition-colors" data-i18n="nav_gemini_qa">Gemini Q&A</a>
+                    <nav class="flex flex-col gap-3">
+                        <a href="#home" class="mobile-nav-link block px-2 py-2 text-[var(--text-main)] font-medium transition-colors" data-i18n="nav_home">Home</a>
+                        <a href="#how-it-works" class="mobile-nav-link block px-2 py-2 text-[var(--text-main)] font-medium transition-colors" data-i18n="nav_how_it_works">How it works</a>
+                        <a href="#marketplace" class="mobile-nav-link block px-2 py-2 text-[var(--text-main)] font-medium transition-colors" data-i18n="nav_marketplace">Marketplace</a>
+                        <a href="#gemini-qa" class="mobile-nav-link block px-2 py-2 text-[var(--text-main)] font-medium transition-colors" data-i18n="nav_gemini_qa">Gemini Q&A</a>
                         
-                        <div class="h-px bg-[var(--card-border)] w-full my-3"></div>
+                        <div class="h-px bg-[var(--card-border)] w-full my-2"></div>
                         
-                        <a href="#diagnostic" class="mobile-nav-link block px-4 py-3.5 rounded-2xl border border-amber-500/30 text-amber-500 font-medium hover:bg-amber-500/10 transition-colors" data-i18n="nav_diagnostic">Diagnostic</a>
+                        <a href="#diagnostic" class="mobile-nav-link block px-4 py-2.5 mt-1 rounded-full border border-amber-500/50 text-amber-500 font-medium hover:bg-amber-500/10 transition-colors" data-i18n="nav_diagnostic">Diagnostic</a>
                     </nav>
                 </div>
 
                 <!-- Footer Actions -->
-                <div class="p-6 border-t border-[var(--card-border)] bg-[var(--panel-bg)]">
+                <div class="p-6 relative z-10">
                     <div class="flex items-center justify-between gap-3 mb-4">
                         <div class="relative w-full">
-                            <select id="mobile-lang-selector" class="w-full glass-panel border border-[var(--card-border)] text-[var(--text-main)] font-medium text-sm rounded-xl py-3 pl-4 pr-10 appearance-none focus:outline-none focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500/50 cursor-pointer transition-colors">
+                            <select id="mobile-lang-selector" class="w-full bg-transparent border border-[var(--card-border)] text-[var(--text-main)] font-medium text-sm rounded-full py-2.5 pl-4 pr-10 appearance-none focus:outline-none focus:border-emerald-500 transition-colors">
                                 <option value="en" class="bg-[var(--bg-secondary)] text-[var(--text-main)]">English</option>
                                 <option value="hi" class="bg-[var(--bg-secondary)] text-[var(--text-main)]">हिन्दी</option>
                                 <option value="gu" class="bg-[var(--bg-secondary)] text-[var(--text-main)]">ગુજરાતી</option>
                             </select>
                             <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-[var(--text-muted)]"><svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg></div>
                         </div>
-                        <button class="theme-toggle-btn p-3 rounded-xl glass-panel border border-[var(--card-border)] hover:bg-[var(--card-border)] text-[var(--text-main)] transition-colors shadow-sm flex-shrink-0">
+                        <button class="theme-toggle-btn w-11 h-11 rounded-full flex items-center justify-center border border-[var(--card-border)] bg-transparent hover:bg-[var(--card-border)] text-[var(--text-main)] transition-colors flex-shrink-0">
                             <!-- Icons handled by JS -->
                         </button>
                     </div>
 
                     <div class="grid grid-cols-2 gap-3">
-                        <a href="#login" class="mobile-nav-link text-center px-4 py-3 rounded-xl text-[var(--text-main)] font-medium border border-[var(--card-border)] bg-[var(--panel-bg)] hover:bg-[var(--card-border)] transition-colors" data-i18n="nav_login">Login</a>
-                        <a href="#register" class="mobile-nav-link text-center bg-gradient-to-r from-emerald-500 to-teal-400 text-white hover:opacity-90 px-4 py-3 rounded-xl font-bold transition-all shadow-lg shadow-emerald-500/20" data-i18n="nav_register">Register</a>
+                        <a href="#login" class="mobile-nav-link flex items-center justify-center px-4 py-2.5 rounded-full text-[var(--text-main)] font-medium border border-[var(--card-border)] bg-transparent hover:bg-[var(--card-border)] transition-colors" data-i18n="nav_login">Login</a>
+                        <a href="#register" class="mobile-nav-link flex items-center justify-center bg-emerald-500 text-white px-4 py-2.5 rounded-full font-bold transition-all hover:opacity-90" data-i18n="nav_register">Register</a>
                     </div>
                 </div>
             </div>
@@ -1241,13 +1244,13 @@
                 if (link.getAttribute('href') === hash || (hash === '#predict' && link.getAttribute('href') === '#home')) {
                     if (isMobile) {
                         if (link.getAttribute('href') === '#diagnostic') {
-                            link.className = 'mobile-nav-link block px-4 py-3.5 rounded-2xl border border-amber-500/30 text-amber-500 font-medium bg-amber-500/10 transition-colors';
+                            link.className = 'mobile-nav-link block px-4 py-2.5 mt-1 rounded-full border border-amber-500/50 text-amber-500 font-medium bg-amber-500/10 transition-colors';
                         } else if (link.getAttribute('href') === '#login') {
-                           link.className = 'mobile-nav-link text-center px-4 py-3 rounded-xl text-[var(--text-main)] font-medium border border-[var(--card-border)] bg-[var(--card-border)] transition-colors';
+                           link.className = 'mobile-nav-link flex items-center justify-center px-4 py-2.5 rounded-full text-[var(--text-main)] font-medium border border-[var(--card-border)] bg-[var(--card-border)] transition-colors';
                         } else if (link.getAttribute('href') === '#register') {
-                           link.className = 'mobile-nav-link text-center bg-gradient-to-r from-emerald-500 to-teal-400 text-white hover:opacity-90 px-4 py-3 rounded-xl font-bold transition-all shadow-lg shadow-emerald-500/20';
+                           link.className = 'mobile-nav-link flex items-center justify-center bg-emerald-500 text-white px-4 py-2.5 rounded-full font-bold transition-all';
                         } else {
-                            link.className = 'mobile-nav-link block px-4 py-3.5 rounded-xl bg-[var(--card-border)] text-[var(--text-main)] font-medium transition-colors';
+                            link.className = 'mobile-nav-link block px-2 py-2 text-emerald-500 font-bold transition-colors';
                         }
                     } else if (!isMobile) {
                         link.className = 'nav-link px-4 py-2 rounded-full text-sm transition-all duration-300 glass-panel text-[var(--text-main)] font-bold';
@@ -1255,13 +1258,13 @@
                 } else {
                     if (isMobile) {
                          if (link.getAttribute('href') === '#diagnostic') {
-                            link.className = 'mobile-nav-link block px-4 py-3.5 rounded-2xl border border-amber-500/30 text-amber-500 font-medium hover:bg-amber-500/10 transition-colors';
+                            link.className = 'mobile-nav-link block px-4 py-2.5 mt-1 rounded-full border border-amber-500/50 text-amber-500 font-medium hover:bg-amber-500/10 transition-colors';
                         } else if (link.getAttribute('href') === '#login') {
-                            link.className = 'mobile-nav-link text-center px-4 py-3 rounded-xl text-[var(--text-main)] font-medium border border-[var(--card-border)] bg-[var(--panel-bg)] hover:bg-[var(--card-border)] transition-colors';
+                            link.className = 'mobile-nav-link flex items-center justify-center px-4 py-2.5 rounded-full text-[var(--text-main)] font-medium border border-[var(--card-border)] bg-transparent hover:bg-[var(--card-border)] transition-colors';
                         } else if (link.getAttribute('href') === '#register') {
-                            link.className = 'mobile-nav-link text-center bg-gradient-to-r from-emerald-500 to-teal-400 text-white hover:opacity-90 px-4 py-3 rounded-xl font-bold transition-all shadow-lg shadow-emerald-500/20';
+                            link.className = 'mobile-nav-link flex items-center justify-center bg-emerald-500 text-white px-4 py-2.5 rounded-full font-bold transition-all hover:opacity-90';
                         } else {
-                            link.className = 'mobile-nav-link block px-4 py-3.5 rounded-xl text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-border)] font-medium transition-colors';
+                            link.className = 'mobile-nav-link block px-2 py-2 text-[var(--text-main)] font-medium hover:text-emerald-500 transition-colors';
                         }
                     } else if (!isMobile && !link.classList.contains('bg-gradient-to-r') && !link.classList.contains('bg-amber-500/10')) {
                         link.className = 'nav-link px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--card-border)]';
